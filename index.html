@@ -31,11 +31,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="periode" class="form-label">Jumlah Periode (tahun)</label>
-                    <input type="number" class="form-control" id="periode" placeholder="Masukkan Jumlah tahun">
+                    <input type="number" class="form-control" id="periode" placeholder="Masukkan Jumlah Tahun">
                 </div>
                 <button onclick="hitungBunga()" class="btn btn-primary w-100">Hitung</button>
-                <div class="mt-3">
-                    <h5>Hasil: <span id="hasil"></span></h5>
+                <div class="mt-3" id="hasil">
+                    <!-- Hasil perhitungan akan ditampilkan di sini -->
                 </div>
             </div>
         </div>
@@ -48,20 +48,28 @@
             const modalAwal = parseFloat(document.getElementById("modalAwal").value);
             const bunga = parseFloat(document.getElementById("bunga").value) / 100;
             const periode = parseInt(document.getElementById("periode").value);
-            let hasil = 0;
+            let hasilAkhir = 0;
+            let bungaTotal = 0;
 
             if (jenisPerhitungan === "bungaTunggal") {
-                // Bunga Tunggal
-                hasil = modalAwal * (1 + (bunga * periode));
+                hasilAkhir = modalAwal * (1 + (bunga * periode));
+                bungaTotal = modalAwal * bunga * periode;
             } else if (jenisPerhitungan === "bungaMajemuk") {
-                // Bunga Majemuk
-                hasil = modalAwal * Math.pow((1 + bunga), periode);
+                hasilAkhir = modalAwal * Math.pow((1 + bunga), periode);
+                bungaTotal = hasilAkhir - modalAwal;
             } else if (jenisPerhitungan === "anuitas") {
-                // Anuitas
-                hasil = modalAwal * (bunga * Math.pow((1 + bunga), periode)) / (Math.pow((1 + bunga), periode) - 1);
+                hasilAkhir = modalAwal * (bunga * Math.pow((1 + bunga), periode)) / (Math.pow((1 + bunga), periode) - 1);
+                bungaTotal = hasilAkhir * periode - modalAwal;
             }
 
-            document.getElementById("hasil").innerText = `Rp ${hasil.toFixed(2)}`;
+            // Menampilkan hasil dalam format yang sesuai
+            document.getElementById("hasil").innerHTML = `
+                <h5>Hasil Perhitungan</h5>
+                <p>Modal Awal: ${modalAwal.toFixed(2)}</p>
+                <p>Bunga: ${bungaTotal.toFixed(2)}</p>
+                <p>Jumlah Periode: ${periode} tahun</p>
+                <p>Hasil Akhir: ${hasilAkhir.toFixed(2)}</p>
+            `;
         }
     </script>
 
